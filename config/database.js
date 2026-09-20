@@ -5,27 +5,24 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const dbConfig = {
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT || 22191),
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-};
+const dbHost = process.env.DB_HOST;
+const dbPort = Number(process.env.DB_PORT || 22191);
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+const dbName = process.env.DB_NAME;
 
 export const initDatabase = async () => {
   let connection;
 
   try {
     connection = await mysql.createConnection({
-      host: dbConfig.host,
-      port: dbConfig.port,
-      user: dbConfig.user,
-      password: dbConfig.password,
-      ssl: dbConfig.ssl,
+      host: dbHost,
+      port: dbPort,
+      user: dbUser,
+      password: dbPassword,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     });
 
     await connection.query('SELECT 1');
@@ -41,22 +38,17 @@ export const initDatabase = async () => {
   }
 };
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT || 22191),
-    dialect: 'mysql',
-    dialectOptions: {
-      ssl: {
-        rejectUnauthorized: false,
-      },
+const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
+  host: dbHost,
+  port: dbPort,
+  dialect: 'mysql',
+  dialectOptions: {
+    ssl: {
+      rejectUnauthorized: false,
     },
-    logging: false,
-  }
-);
+  },
+  logging: false,
+});
 
 export default sequelize;
-
+```
