@@ -35,7 +35,7 @@ app.use('/api/chat', chatRoutes);
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // For frontend routes, return Vite's index.html
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
