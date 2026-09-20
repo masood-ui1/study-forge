@@ -28,14 +28,9 @@ export const initDatabase = async () => {
       ssl: dbConfig.ssl,
     });
 
-    // The database should normally already exist on Aiven.
-    // We don't need to create it here.
-    await connection.query(
-      `SELECT 1`
-    );
+    await connection.query('SELECT 1');
 
     console.log('Successfully connected to Aiven MySQL.');
-
   } catch (error) {
     console.error('Failed to initialize database:', error);
     throw error;
